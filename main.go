@@ -36,11 +36,13 @@ func runServer() {
 		w.Write([]byte("Hello World"))
 	})
 
-	http.HandleFunc("/check", func(w http.ResponseWriter, req *http.Request) {
-		out := ResultInfo{}
-		out.inbound = inboundMap
-		out.outbound = outboundMap
-		jsonString, _ := json.Marshal(out)
+	http.HandleFunc("/inbound", func(w http.ResponseWriter, req *http.Request) {
+		jsonString, _ := json.Marshal(inboundMap)
+		w.Write(jsonString)
+	})
+
+	http.HandleFunc("/outbound", func(w http.ResponseWriter, req *http.Request) {
+		jsonString, _ := json.Marshal(outboundMap)
 		w.Write(jsonString)
 	})
 
