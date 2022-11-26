@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/ghedo/go.pkt/capture/pcap"
@@ -37,19 +36,19 @@ func main() {
 
 		// Get the TCP layer from this packet
 		if tcpLayer := packet.Layer(layers.LayerTypeTCP); tcpLayer != nil {
-			fmt.Println("This is a TCP packet!")
+			log.Println("This is a TCP packet!")
 			// Get actual TCP data from this layer
 			tcp, _ := tcpLayer.(*layers.TCP)
-			fmt.Printf("From src port %d to dst port %d\n", tcp.SrcPort, tcp.DstPort)
+			log.Printf("From src port %d to dst port %d\n", tcp.SrcPort, tcp.DstPort)
 		}
 
 		// Iterate over all layers, printing out each layer type
 		for _, layer := range packet.Layers() {
-			fmt.Println("PACKET LAYER:", layer.LayerType())
+			log.Println("PACKET LAYER:", layer.LayerType())
 
 			body := string(layer.LayerPayload())
 
-			fmt.Println(body)
+			log.Println(body)
 		}
 	}
 }
