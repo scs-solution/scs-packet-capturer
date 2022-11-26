@@ -38,8 +38,10 @@ func main() {
 		if ipLayer := packet.Layer(layers.LayerTypeIPv4); ipLayer != nil {
 			log.Println("This is a IP packet!")
 			ip, _ := ipLayer.(*layers.IPv4)
-			log.Printf("From src ip %s to src ip %s\n", ip.SrcIP, ip.DstIP)
+			log.Printf("From src ip %s to dst ip %s\n", ip.SrcIP, ip.DstIP)
 		}
+
+		continue
 
 		if tcpLayer := packet.Layer(layers.LayerTypeTCP); tcpLayer != nil {
 			log.Println("This is a TCP packet!")
