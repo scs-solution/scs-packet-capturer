@@ -56,6 +56,18 @@ func runServer() {
 		w.Write(jsonString)
 	})
 
+	http.HandleFunc("/clear", func(w http.ResponseWriter, req *http.Request) {
+		for k := range inboundMap {
+			delete(inboundMap, k)
+		}
+
+		for k := range outboundMap {
+			delete(outboundMap, k)
+		}
+
+		w.Write([]byte("ok"))
+	})
+
 	http.ListenAndServe(":5000", nil)
 }
 
