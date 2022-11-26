@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"log"
 	"net"
 	"net/http"
@@ -22,9 +23,17 @@ func GetOutboundIP() net.IP {
 	return localAddr.IP
 }
 
+var inboundMap = map[string]int{}
+var outboundMap = map[string]int{}
+
 func runServer() {
 	http.HandleFunc("/hello", func(w http.ResponseWriter, req *http.Request) {
 		w.Write([]byte("Hello World"))
+	})
+
+	http.HandleFunc("/check", func(w http.ResponseWriter, req *http.Request) {
+		jsonString, _ := json.Marshal(inboundMap)
+		w.Write(jsonString)
 	})
 
 	http.ListenAndServe(":5000", nil)
@@ -66,8 +75,10 @@ func runCapture() {
 
 			if ip.SrcIP.Equal(myIp) {
 				log.Println("OutBound!")
+				outboundMap[ip.DstIP.String()]++
 			} else if ip.DstIP.Equal(myIp) {
 				log.Println("InBound!")
+				inboundMap[ip.SrcIP.String()]++
 			} else {
 				log.Println("What??")
 			}
@@ -115,5 +126,6 @@ func main() {
 	go runServer()
 	go runCapture()
 
+	// https://stackoverflow.com/questions/36419054/go-projects-main-goroutine-sleep-forever
 	select {}
 }
