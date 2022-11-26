@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"sync"
 
 	"github.com/ghedo/go.pkt/capture/pcap"
 	"github.com/google/gopacket"
@@ -75,6 +76,8 @@ func runCapture() {
 
 	myIp := GetOutboundIP()
 
+	var mutex = &sync.Mutex{}
+
 	for {
 		buf, err := src.Capture()
 		if err != nil {
@@ -92,6 +95,7 @@ func runCapture() {
 			ip, _ := ipLayer.(*layers.IPv4)
 			// log.Printf("From src ip %s to dst ip %s\n", ip.SrcIP, ip.DstIP)
 
+			mutex.Lock()
 			if ip.SrcIP.Equal(myIp) {
 				// log.Println("OutBound!")
 				outboundMap[ip.DstIP.String()]++
@@ -101,6 +105,7 @@ func runCapture() {
 			} else {
 				// log.Println("What??")
 			}
+			mutex.Unlock()
 		}
 
 		continue
