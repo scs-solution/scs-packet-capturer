@@ -79,7 +79,7 @@ func runCapture() {
 		if ipLayer := packet.Layer(layers.LayerTypeIPv4); ipLayer != nil {
 			// log.Println("This is a IP packet!")
 			ip, _ := ipLayer.(*layers.IPv4)
-			// log.Printf("From src ip %s to dst ip %s\n", ip.SrcIP, ip.DstIP)
+			log.Printf("From src ip %s to dst ip %s\n", ip.SrcIP, ip.DstIP)
 
 			if ip.SrcIP.Equal(myIp) {
 				// log.Println("OutBound!")
