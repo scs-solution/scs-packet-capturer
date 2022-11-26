@@ -2,11 +2,24 @@ package main
 
 import (
 	"log"
+	"net"
 
 	"github.com/ghedo/go.pkt/capture/pcap"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 )
+
+func GetOutboundIP() net.IP {
+	conn, err := net.Dial("udp", "8.8.8.8:80")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+
+	localAddr := conn.LocalAddr().(*net.UDPAddr)
+
+	return localAddr.IP
+}
 
 func main() {
 	src, err := pcap.Open("eth0")
@@ -22,6 +35,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	myIp := GetOutboundIP()
+
+	log.Println(myIp)
+
+	return
 
 	for {
 		buf, err := src.Capture()
