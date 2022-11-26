@@ -27,8 +27,8 @@ var inboundMap = map[string]int{}
 var outboundMap = map[string]int{}
 
 type ResultInfo struct {
-	inbound  map[string]int
-	outbound map[string]int
+	inbound  map[string]int `json:"inbound"`
+	outbound map[string]int `json:"outbound"`
 }
 
 func runServer() {
