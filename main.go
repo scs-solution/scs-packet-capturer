@@ -43,37 +43,13 @@ func main() {
 			fmt.Printf("From src port %d to dst port %d\n", tcp.SrcPort, tcp.DstPort)
 		}
 
-		if packet.ApplicationLayer() != nil {
-			body := packet.ApplicationLayer().Payload()
-			if len(body) > 0 {
-				bodyStr := string(body)
+		// Iterate over all layers, printing out each layer type
+		for _, layer := range packet.Layers() {
+			fmt.Println("PACKET LAYER:", layer.LayerType())
 
-				fmt.Println(bodyStr)
+			body := string(layer.LayerPayload())
 
-				// modify payload of application layer
-				*packet.ApplicationLayer().(*gopacket.Payload) = []byte("GET / HTTP/1.1")
-
-				// if its tcp we need to tell it which network layer is being used
-				// to be able to handle multiple protocols we can add a if clause around this
-				packet.TransportLayer().(*layers.TCP).SetNetworkLayerForChecksum(packet.NetworkLayer())
-
-				buffer := gopacket.NewSerializeBuffer()
-				options := gopacket.SerializeOptions{
-					ComputeChecksums: true,
-					FixLengths:       true,
-				}
-
-				// Serialize Packet to get raw bytes
-				if err := gopacket.SerializePacket(buffer, options, packet); err != nil {
-					log.Fatalln(err)
-				}
-
-				packetBytes := buffer.Bytes()
-
-				fmt.Println(packetBytes)
-
-				fmt.Println("-- ")
-			}
+			fmt.Println(body)
 		}
 	}
 }
