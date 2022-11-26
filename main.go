@@ -27,8 +27,8 @@ var inboundMap = map[string]int{}
 var outboundMap = map[string]int{}
 
 type ResultInfo struct {
-	inbound  map[string]int `json:"inbound"`
-	outbound map[string]int `json:"outbound"`
+	inbound  *map[string]int `json:"inbound"`
+	outbound *map[string]int `json:"outbound"`
 }
 
 func runServer() {
@@ -38,8 +38,8 @@ func runServer() {
 
 	http.HandleFunc("/check", func(w http.ResponseWriter, req *http.Request) {
 		res := ResultInfo{
-			inbound:  inboundMap,
-			outbound: outboundMap,
+			inbound:  &inboundMap,
+			outbound: &outboundMap,
 		}
 		jsonString, _ := json.Marshal(res)
 		w.Write(jsonString)
