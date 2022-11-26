@@ -131,8 +131,8 @@ func runCapture() {
 }
 
 func main() {
-	go runServer()
 	go runCapture()
+	go runServer()
 
 	// https://stackoverflow.com/questions/36419054/go-projects-main-goroutine-sleep-forever
 	select {}
