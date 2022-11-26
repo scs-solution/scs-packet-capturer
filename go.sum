@@ -5,6 +5,10 @@ github.com/google/gopacket v1.1.19 h1:ves8RnFZPGiFnTS0uPQStjwru6uO6h+nlr9j6fL7kF
 github.com/google/gopacket v1.1.19/go.mod h1:iJ8V8n6KS+z2U1A8pUwu8bW5SyEMkXJB8Yo/Vo+TKTo=
 github.com/scs-solution/go.pkt2 v0.0.0-20221126042725-4d08ea808aff h1:pSMe+UVHfsplEo3HRJ62bUwliH3GPiK5xIzxWSV5of8=
 github.com/scs-solution/go.pkt2 v0.0.0-20221126042725-4d08ea808aff/go.mod h1:TxMjC0tmh1vowMDnJ0/j9tg7GKM18nbF0xp8uMaUAUQ=
+github.com/scs-solution/go.pkt2 v0.0.0-20221126044217-458c196e4b28 h1:wy4AvzQ9CKf9wf5fD3jKMbZATrBPyn1OZ4wFkmMw6rU=
+github.com/scs-solution/go.pkt2 v0.0.0-20221126044217-458c196e4b28/go.mod h1:TxMjC0tmh1vowMDnJ0/j9tg7GKM18nbF0xp8uMaUAUQ=
+github.com/scs-solution/go.pkt2 v0.0.0-20221126044924-c6fb1acf0ddf h1:7fmh4GuW299GDfve4ybCnZaXd1LRGIWqoE1x/SG9D6M=
+github.com/scs-solution/go.pkt2 v0.0.0-20221126044924-c6fb1acf0ddf/go.mod h1:TxMjC0tmh1vowMDnJ0/j9tg7GKM18nbF0xp8uMaUAUQ=
 github.com/songgao/water v0.0.0-20180420064739-bf1a5d02778f/go.mod h1:P5HUIBuIWKbyjl083/loAegFkfbFNx5i2qEP4CNbm7E=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550/go.mod h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=

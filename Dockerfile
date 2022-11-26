@@ -1,12 +1,10 @@
 # syntax=docker/dockerfile:1
 
-FROM ubuntu:latest
+FROM tetafro/golang-gcc:1.16-alpine
 
 WORKDIR /app
 
-# RUN apk add --no-cache libpcap-dev gcc libc-dev bsd-compat-headers
-RUN apt update
-RUN apt install -y golang-go libpcap-dev
+RUN apk add --no-cache  libpcap-dev gcc libc-dev bsd-compat-headers
 
 COPY go.mod ./
 COPY go.sum ./

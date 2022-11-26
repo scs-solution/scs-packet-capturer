@@ -2,6 +2,12 @@
 
 Capture inbound outbound tcp packet counts
 
+```sh
+sudo docker rm $(sudo docker ps -a -q -f ancestor=rollrat/scs-packet-capturer)
+sudo docker rmi rollrat/scs-packet-capturer
+sudo docker run --net=host rollrat/scs-packet-capturer:latest
+```
+
 ```json
 # GET: http://127.0.0.1:5000/check
 {
