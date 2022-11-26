@@ -44,6 +44,8 @@ func main() {
 			log.Println("This is a TCP packet!")
 			tcp, _ := tcpLayer.(*layers.TCP)
 			log.Printf("From src port %d to dst port %d\n", tcp.SrcPort, tcp.DstPort)
+		} else {
+			continue
 		}
 
 		// for _, layer := range packet.Layers() {
