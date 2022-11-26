@@ -30,9 +30,11 @@ func main() {
 			log.Fatal(err)
 		}
 
-		log.Println("PACKET!!!")
-
 		packet := gopacket.NewPacket(buf, layers.LayerTypeIPv4, gopacket.Default)
+
+		if tcpLayer := packet.Layer(layers.LayerTypeTCP); tcpLayer == nil {
+			continue
+		}
 
 		if ipLayer := packet.Layer(layers.LayerTypeIPv4); ipLayer != nil {
 			fmt.Println("This is a IP packet!")
@@ -44,8 +46,6 @@ func main() {
 			log.Println("This is a TCP packet!")
 			tcp, _ := tcpLayer.(*layers.TCP)
 			log.Printf("From src port %d to dst port %d\n", tcp.SrcPort, tcp.DstPort)
-		} else {
-			continue
 		}
 
 		// for _, layer := range packet.Layers() {
