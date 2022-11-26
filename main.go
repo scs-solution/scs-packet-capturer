@@ -48,11 +48,11 @@ func main() {
 			log.Printf("From src port %d to dst port %d\n", tcp.SrcPort, tcp.DstPort)
 		}
 
-		for _, layer := range packet.Layers() {
-			log.Println("PACKET LAYER:", layer.LayerType())
-			body := string(layer.LayerPayload())
-			log.Println(body)
-		}
+		// for _, layer := range packet.Layers() {
+		// 	log.Println("PACKET LAYER:", layer.LayerType())
+		// 	body := string(layer.LayerPayload())
+		// 	log.Println(body)
+		// }
 
 		if packet.ApplicationLayer() != nil {
 			body := packet.ApplicationLayer().Payload()
