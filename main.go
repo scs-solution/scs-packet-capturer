@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"sync"
 
-	"github.com/ghedo/go.pkt/capture/pcap"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
+	"github.com/scs-solution/go.pkt2/capture/pcap"
 )
 
 func GetOutboundIP() net.IP {
