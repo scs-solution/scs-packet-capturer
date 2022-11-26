@@ -38,10 +38,6 @@ func main() {
 
 	myIp := GetOutboundIP()
 
-	log.Println(myIp)
-
-	return
-
 	for {
 		buf, err := src.Capture()
 		if err != nil {
@@ -58,6 +54,14 @@ func main() {
 			log.Println("This is a IP packet!")
 			ip, _ := ipLayer.(*layers.IPv4)
 			log.Printf("From src ip %s to dst ip %s\n", ip.SrcIP, ip.DstIP)
+
+			if ip.SrcIP.Equal(myIp) {
+				log.Println("OutBound!")
+			} else if ip.DstIP.Equal(myIp) {
+				log.Println("InBound!")
+			} else {
+				log.Println("What??")
+			}
 		}
 
 		continue
