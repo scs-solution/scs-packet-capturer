@@ -26,13 +26,21 @@ func GetOutboundIP() net.IP {
 var inboundMap = map[string]int{}
 var outboundMap = map[string]int{}
 
+type ResultInfo struct {
+	inbound  map[string]int
+	outbound map[string]int
+}
+
 func runServer() {
 	http.HandleFunc("/hello", func(w http.ResponseWriter, req *http.Request) {
 		w.Write([]byte("Hello World"))
 	})
 
 	http.HandleFunc("/check", func(w http.ResponseWriter, req *http.Request) {
-		jsonString, _ := json.Marshal(inboundMap)
+		out := ResultInfo{}
+		out.inbound = inboundMap
+		out.outbound = outboundMap
+		jsonString, _ := json.Marshal(out)
 		w.Write(jsonString)
 	})
 
@@ -69,18 +77,18 @@ func runCapture() {
 		}
 
 		if ipLayer := packet.Layer(layers.LayerTypeIPv4); ipLayer != nil {
-			log.Println("This is a IP packet!")
+			// log.Println("This is a IP packet!")
 			ip, _ := ipLayer.(*layers.IPv4)
-			log.Printf("From src ip %s to dst ip %s\n", ip.SrcIP, ip.DstIP)
+			// log.Printf("From src ip %s to dst ip %s\n", ip.SrcIP, ip.DstIP)
 
 			if ip.SrcIP.Equal(myIp) {
-				log.Println("OutBound!")
+				// log.Println("OutBound!")
 				outboundMap[ip.DstIP.String()]++
 			} else if ip.DstIP.Equal(myIp) {
-				log.Println("InBound!")
+				// log.Println("InBound!")
 				inboundMap[ip.SrcIP.String()]++
 			} else {
-				log.Println("What??")
+				// log.Println("What??")
 			}
 		}
 
