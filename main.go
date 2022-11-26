@@ -1,12 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/ghedo/go.pkt/capture/pcap"
-	"github.com/google/gopacket"
-	"github.com/google/gopacket/layers"
+
+	"github.com/ghedo/go.pkt/layers"
 )
 
 func main() {
@@ -30,23 +29,26 @@ func main() {
 			log.Fatal(err)
 		}
 
-		packet := gopacket.NewPacket(buf, layers.LayerTypeIPv4, gopacket.Default)
+		rcv_pkt, err := layers.UnpackAll(buf, src.LinkType())
+		log.Println(rcv_pkt)
 
-		if tcpLayer := packet.Layer(layers.LayerTypeTCP); tcpLayer == nil {
-			continue
-		}
+		// packet := gopacket.NewPacket(buf, layers.LayerTypeIPv4, gopacket.Default)
 
-		if ipLayer := packet.Layer(layers.LayerTypeIPv4); ipLayer != nil {
-			fmt.Println("This is a IP packet!")
-			ip, _ := ipLayer.(*layers.IPv4)
-			log.Printf("From src ip %s to src ip %s\n", ip.SrcIP, ip.DstIP)
-		}
+		// if tcpLayer := packet.Layer(layers.LayerTypeTCP); tcpLayer == nil {
+		// 	continue
+		// }
 
-		if tcpLayer := packet.Layer(layers.LayerTypeTCP); tcpLayer != nil {
-			log.Println("This is a TCP packet!")
-			tcp, _ := tcpLayer.(*layers.TCP)
-			log.Printf("From src port %d to dst port %d\n", tcp.SrcPort, tcp.DstPort)
-		}
+		// if ipLayer := packet.Layer(layers.LayerTypeIPv4); ipLayer != nil {
+		// 	fmt.Println("This is a IP packet!")
+		// 	ip, _ := ipLayer.(*layers.IPv4)
+		// 	log.Printf("From src ip %s to src ip %s\n", ip.SrcIP, ip.DstIP)
+		// }
+
+		// if tcpLayer := packet.Layer(layers.LayerTypeTCP); tcpLayer != nil {
+		// 	log.Println("This is a TCP packet!")
+		// 	tcp, _ := tcpLayer.(*layers.TCP)
+		// 	log.Printf("From src port %d to dst port %d\n", tcp.SrcPort, tcp.DstPort)
+		// }
 
 		// for _, layer := range packet.Layers() {
 		// 	log.Println("PACKET LAYER:", layer.LayerType())
@@ -54,25 +56,25 @@ func main() {
 		// 	log.Println(body)
 		// }
 
-		if packet.ApplicationLayer() != nil {
-			body := packet.ApplicationLayer().Payload()
-			if len(body) > 0 {
-				buffer := gopacket.NewSerializeBuffer()
-				options := gopacket.SerializeOptions{
-					ComputeChecksums: true,
-					FixLengths:       true,
-				}
+		// if packet.ApplicationLayer() != nil {
+		// 	body := packet.ApplicationLayer().Payload()
+		// 	if len(body) > 0 {
+		// 		buffer := gopacket.NewSerializeBuffer()
+		// 		options := gopacket.SerializeOptions{
+		// 			ComputeChecksums: true,
+		// 			FixLengths:       true,
+		// 		}
 
-				if err := gopacket.SerializePacket(buffer, options, packet); err != nil {
-					log.Fatalln(err)
-				}
+		// 		if err := gopacket.SerializePacket(buffer, options, packet); err != nil {
+		// 			log.Fatalln(err)
+		// 		}
 
-				packetBytes := buffer.Bytes()
+		// 		packetBytes := buffer.Bytes()
 
-				fmt.Println(packetBytes)
+		// 		fmt.Println(packetBytes)
 
-				fmt.Println("-- ")
-			}
-		}
+		// 		fmt.Println("-- ")
+		// 	}
+		// }
 	}
 }
