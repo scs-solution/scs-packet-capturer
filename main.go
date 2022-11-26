@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/ghedo/go.pkt/capture/pcap"
@@ -31,24 +32,45 @@ func main() {
 
 		log.Println("PACKET!!!")
 
-		// do something with the packet
 		packet := gopacket.NewPacket(buf, layers.LayerTypeIPv4, gopacket.Default)
 
-		// Get the TCP layer from this packet
+		if ipLayer := packet.Layer(layers.LayerTypeIPv4); ipLayer != nil {
+			fmt.Println("This is a IP packet!")
+			ip, _ := ipLayer.(*layers.IPv4)
+			log.Printf("From src ip %s to src ip %s\n", ip.SrcIP, ip.DstIP)
+		}
+
 		if tcpLayer := packet.Layer(layers.LayerTypeTCP); tcpLayer != nil {
 			log.Println("This is a TCP packet!")
-			// Get actual TCP data from this layer
 			tcp, _ := tcpLayer.(*layers.TCP)
 			log.Printf("From src port %d to dst port %d\n", tcp.SrcPort, tcp.DstPort)
 		}
 
-		// Iterate over all layers, printing out each layer type
-		for _, layer := range packet.Layers() {
-			log.Println("PACKET LAYER:", layer.LayerType())
+		// for _, layer := range packet.Layers() {
+		// 	log.Println("PACKET LAYER:", layer.LayerType())
+		// 	body := string(layer.LayerPayload())
+		// 	log.Println(body)
+		// }
 
-			body := string(layer.LayerPayload())
+		if packet.ApplicationLayer() != nil {
+			body := packet.ApplicationLayer().Payload()
+			if len(body) > 0 {
+				buffer := gopacket.NewSerializeBuffer()
+				options := gopacket.SerializeOptions{
+					ComputeChecksums: true,
+					FixLengths:       true,
+				}
 
-			log.Println(body)
+				if err := gopacket.SerializePacket(buffer, options, packet); err != nil {
+					log.Fatalln(err)
+				}
+
+				packetBytes := buffer.Bytes()
+
+				fmt.Println(packetBytes)
+
+				fmt.Println("-- ")
+			}
 		}
 	}
 }
