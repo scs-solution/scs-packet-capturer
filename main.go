@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net"
+	"net/http"
 
 	"github.com/ghedo/go.pkt/capture/pcap"
 	"github.com/google/gopacket"
@@ -21,7 +22,15 @@ func GetOutboundIP() net.IP {
 	return localAddr.IP
 }
 
-func main() {
+func runServer() {
+	http.HandleFunc("/hello", func(w http.ResponseWriter, req *http.Request) {
+		w.Write([]byte("Hello World"))
+	})
+
+	http.ListenAndServe(":5000", nil)
+}
+
+func runCapture() {
 	src, err := pcap.Open("eth0")
 	if err != nil {
 		log.Fatal(err)
@@ -100,4 +109,11 @@ func main() {
 		// 	}
 		// }
 	}
+}
+
+func main() {
+	go runServer()
+	go runCapture()
+
+	select {}
 }
