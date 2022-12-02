@@ -3,6 +3,12 @@
 Capture inbound outbound tcp packet counts
 
 ```sh
+wget https://github.com/scs-solution/scs-packet-capturer/releases/download/0/scs-packet-capturer
+chmod +x scs-packet-capturer
+sudo nohup ./scs-packet-capturer &
+
+or
+
 sudo docker rm $(sudo docker ps -a -q -f ancestor=rollrat/scs-packet-capturer)
 sudo docker rmi rollrat/scs-packet-capturer
 sudo docker run --net=host rollrat/scs-packet-capturer:latest
